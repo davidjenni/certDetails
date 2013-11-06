@@ -58,4 +58,26 @@ namespace CertDetails
             return 0;
         }
     }
+
+    class RecursiveCommand : Command
+    {
+        public override int Run(IEnumerable<string> parameters, ResultWriter resultWriter)
+        {
+            string startDirectory = Environment.CurrentDirectory;
+            string pattern = "*.cer";
+            bool isFirst = true;
+
+            foreach (var file in Directory.EnumerateFiles(startDirectory, pattern, SearchOption.AllDirectories))
+            {
+                var details = CertificateDetails.OpenFromFile(file);
+                if (isFirst)
+                {
+                    isFirst = false;
+                    resultWriter.WriteHeader(details);
+                }
+                resultWriter.Write(details);
+            }
+            return 0;
+        }
+    }
 }

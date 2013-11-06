@@ -27,6 +27,8 @@ namespace CertDetails
                 {
                     case "SHOW":
                         return new ShowCommand().Run(options.Parameters, resultWriter);
+                    case "RECURSIVE":
+                        return new RecursiveCommand().Run(options.Parameters, resultWriter);
                     default:
                         Options.Usage();
                         break;

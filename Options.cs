@@ -64,11 +64,15 @@ namespace CertDetails
             Console.WriteLine(@"
 Usage:
 CertDetails command_verb [parameters]
-  Command verbs: show, 
+  Command verbs: SHOW, RECURSIVE
 
-show path_to_cert_file [password]
-  path_to_cert_file: .cer or .pfx file
-  password:          password if .pfx file with private key
+SHOW path_to_cert_file [password]
+      path_to_cert_file: .cer or .pfx file
+      password:          password if .pfx file with private key
+  displays details of a given certificate file
+
+RECURSIVE 
+  walks recursively directory tree and displays details of all .cer files
 
 global options:
   -csv:file         emit result to CSV file (default: emit to stdout)
