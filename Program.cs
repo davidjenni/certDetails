@@ -21,15 +21,34 @@ namespace CertDetails
         int Run(string[] args)
         {
             var options = Options.Parse(args);
-            switch (options.Command.ToUpperInvariant())
+            using (var resultWriter = CreateWriter(options))
             {
-                case "SHOW":
-                    return new ShowCommand().Run(options.Parameters);
-                default:
-                    Options.Usage();
-                    break;
+                switch (options.Command.ToUpperInvariant())
+                {
+                    case "SHOW":
+                        return new ShowCommand().Run(options.Parameters, resultWriter);
+                    default:
+                        Options.Usage();
+                        break;
+                }
             }
             return 99;
+        }
+
+        ResultWriter CreateWriter(Options options)
+        {
+            if (options.EmitToStdout)
+            {
+                return new StdoutResultWriter();
+            }
+            else if (!string.IsNullOrEmpty(options.CsvFile))
+            {
+                return new CsvResultWriter(options.CsvFile);
+            }
+            else
+            {
+                throw new NotImplementedException("Unknown result write");
+            }
         }
     }
 }

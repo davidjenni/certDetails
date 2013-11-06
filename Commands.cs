@@ -8,12 +8,12 @@ namespace CertDetails
 {
     abstract class Command
     {
-        public abstract int Run(IEnumerable<string> parameters);
+        public abstract int Run(IEnumerable<string> parameters, ResultWriter resultWriter);
     }
 
     class ShowCommand : Command
     {
-        public override int Run(IEnumerable<string> parameters)
+        public override int Run(IEnumerable<string> parameters, ResultWriter resultWriter)
         {
             try
             {
@@ -47,20 +47,13 @@ namespace CertDetails
                         return 1;
                     }
                 }
-                return ShowDetails(details);
+                resultWriter.WriteHeader(details);
+                resultWriter.Write(details);
             }
             catch (FileNotFoundException ex)
             {
                 Console.WriteLine(ex.Message);
                 return 1;
-            }
-        }
-
-        int ShowDetails(CertificateDetails details)
-        {
-            foreach (var detail in details.Pairs)
-            {
-                Console.WriteLine("{0, -20}: {1}", detail.Field, detail.Value);
             }
             return 0;
         }
