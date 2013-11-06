@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CertDetails
@@ -12,43 +13,23 @@ namespace CertDetails
             int errorCode = app.Run(args);
             if (errorCode != 0)
             {
-                app.Usage();
+                Options.Usage(errorCode);
             }
-            return errorCode;
+            return 0;
         }
 
         int Run(string[] args)
         {
-            if (args.Length < 1)
-            {
-                Usage();
-                Environment.Exit(10);
-            }
-            var parameters = args.Skip(1);
-            switch (args[0].ToUpperInvariant())
+            var options = Options.Parse(args);
+            switch (options.Command.ToUpperInvariant())
             {
                 case "SHOW":
-                    return new ShowCommand().Run(parameters);
+                    return new ShowCommand().Run(options.Parameters);
                 default:
-                    Usage();
-                    Environment.Exit(10);
+                    Options.Usage();
                     break;
             }
             return 99;
         }
-
-        void Usage()
-        {
-            Console.WriteLine(@"
-Usage:
-CertDetails command_verb [parameters]
-  Command verbs: show, 
-
-show path_to_cert_file [password]
-  path_to_cert_file: .cer or .pfx file
-  password:          password if .pfx file with private key
-            ");
-        }
-
     }
 }

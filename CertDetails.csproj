@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="CertificateDetails.cs" />
     <Compile Include="Commands.cs" />
+    <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
